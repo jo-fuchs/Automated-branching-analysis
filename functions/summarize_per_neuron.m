@@ -72,9 +72,12 @@ function [per_neuron_results] = summarize_per_neuron(per_neuron_results, Classif
             per_neuron_results(k,17) = {dendrite_branch_points};
             %dendrite_branch_length = 
             per_neuron_results(k,18) = {dendrite_branch_length * pix_size};
+            
+            % Total axon length
+            per_neuron_results(k,19) = { per_neuron_results(k,6) +  per_neuron_results(k,14)};
 
             % No comment
-            per_neuron_results(k,19) = {''};
+            per_neuron_results(k,20) = {''};
             
         case 'excluded'
             % how is k dealt with here? or with the others?
@@ -95,7 +98,8 @@ function [per_neuron_results] = summarize_per_neuron(per_neuron_results, Classif
             per_neuron_results(k,16) = {NaN};
             per_neuron_results(k,17) = {NaN};
             per_neuron_results(k,18) = {NaN};
-            per_neuron_results(k,19) = {'Excluded after segmentation'};
+            per_neuron_results(k,19) = {NaN};
+            per_neuron_results(k,20) = {'Excluded after segmentation'};
            
         case 'no soma'
             % no soma detected -> nothing summarized
@@ -116,7 +120,8 @@ function [per_neuron_results] = summarize_per_neuron(per_neuron_results, Classif
             per_neuron_results(k,16) = {NaN};
             per_neuron_results(k,17) = {NaN};
             per_neuron_results(k,18) = {NaN};
-            per_neuron_results(k,19) = {'No soma detected'};
+            per_neuron_results(k,19) = {NaN};
+            per_neuron_results(k,20) = {'No soma detected'};
             
         case 'no neurites'
             per_neuron_results(k,2) = {Classified_processes.TimestampStart};
@@ -142,11 +147,12 @@ function [per_neuron_results] = summarize_per_neuron(per_neuron_results, Classif
             per_neuron_results(k,16) = {NaN};
             per_neuron_results(k,17) = {NaN};
             per_neuron_results(k,18) = {NaN};
-            per_neuron_results(k,19) = {'No neurites detected'}; 
+            per_neuron_results(k,19) = {NaN};
+            per_neuron_results(k,20) = {'No neurites detected'}; 
     end
         
     % Headers  
-    header = {'NeuronIndex', 'TimeStart', 'TimeEnd',  'SkeletonLength', 'SomaSize' , 'AxonLength', 'PrimBranchNum' , 'PrimBranchLen', 'SecBranchNum' , 'SecBranchLen', 'TertBranchNum' , 'TertBranchLen', 'AxonBranchPoints', 'AxonBranchLength', 'DendriteNum' , 'DendriteLen', 'DendBranchNum' , 'DendBranchLen','Comment'};
+    header = {'NeuronIndex', 'TimeStart', 'TimeEnd',  'TotalNeuriteLength', 'SomaSize' , 'PrimaryAxonLength', 'PrimBranchNum' , 'PrimBranchLength', 'SecBranchNum' , 'SecBranchLength', 'TertBranchNum' , 'TertBranchLength', 'AxonBranchPoints', 'AxonBranchLength', 'DendriteNum' , 'TotalDendriteLength', 'DendBranchNum' , 'DendBranchLen', 'TotalAxonLength','Comment'};
     per_neuron_results.Properties.VariableNames = header;
 
 end
