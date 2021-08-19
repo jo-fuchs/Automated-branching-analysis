@@ -74,7 +74,7 @@ function [per_neuron_results] = summarize_per_neuron(per_neuron_results, Classif
             per_neuron_results(k,18) = {dendrite_branch_length * pix_size};
             
             % Total axon length
-            per_neuron_results(k,19) = { per_neuron_results(k,6) +  per_neuron_results(k,14)};
+            per_neuron_results(k,19) = { per_neuron_results{k,6} +  per_neuron_results{k,14}};
 
             % No comment
             per_neuron_results(k,20) = {''};
