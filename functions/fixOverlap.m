@@ -1,9 +1,5 @@
 function [newSkel, Branches, endPoint ] = fixOverlap(newSkel, StartPoints, Branches, endPoint, MIN_LEN )
 %fixOverlap tests for overlapping branches, keeps longest one and redetects new path for other starting point
-%  Branches = Neurites;
-%  StartPoints = NeuriteStartPoints;
-
-% updated overlap detection (takes slightly longer but is more accurate)
 
     % find overlapping parts (even if more than two branches overlap)
     FlatBranch = Branches(~cellfun('isempty',Branches));
@@ -14,12 +10,10 @@ function [newSkel, Branches, endPoint ] = fixOverlap(newSkel, StartPoints, Branc
 
     %find largest overlap
     overlapMax = max(NeuriteMat(:));
-
-    %largestOverlap = NeuriteMat==max(NeuriteMat(:));   
+    
     tempBranches = cell(size(Branches));        
         
     
-    % while still overlap -> find longest, remove that completely, restart
     while overlapMax > 1
         % find longest path and remove it from skeleton
         [~, index] = max(cellfun(@nnz, Branches));  
@@ -59,7 +53,7 @@ function [newSkel, Branches, endPoint ] = fixOverlap(newSkel, StartPoints, Branc
       
       
  %% previous overlap detection 
- % sensitive to cases with >2 paths overlapping but very fast
+ % sensitive to cases with >2 paths overlapping but much faster
  
 %     for k = flip(1:(nnz(StartPoints)))
 %     

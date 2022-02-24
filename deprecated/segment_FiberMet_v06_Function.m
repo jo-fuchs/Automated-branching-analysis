@@ -1,5 +1,5 @@
-function Seg_Image = segment_FiberMet_v05_Function(I , thickness_pixel)
-%% different method of bridging (connecting endpoints)
+function Seg_Image = segment_FiberMet_v06_Function(I , thickness_pixel, gap_size_pixel, gap_bridge_check)
+%% different method of bridging (connecting endpoints) + added optionality
 disp('version5');
 % thickness_pixel
 % clc; clear all; close all; % I = (imread('0020_2.tif')); I = uint8(I); 
@@ -104,9 +104,14 @@ BW_thin0 = bwmorph(BW , 'open', 1); % remove the remaining thin stitching artifa
 BW_thicken = bwmorph(BW_thin0 , 'thicken', round(thickness_pixel/2)); % reduce the number of points to look at
 BW_thicken = bwmorph(BW_thicken , 'bridge', round(thickness_pixel/2)); % 0.5 µm
 
-% Bridge by connecting endpoints
-gap_size_pixel = 6 * thickness_pixel; % 6µm, could be a variable
-BW_bridges = bridge_gaps(BW_thicken, gap_size_pixel);
+if (gap_bridge_check)
+    % Bridge by connecting endpoints
+    disp('briging gaps');
+    disp(gap_size_pixel);
+    BW_bridges = bridgeGaps(BW_thicken, gap_size_pixel);
+else
+    BW_bridges = BW_thicken;    
+end
 
 BW_bridges = bwmorph( BW_bridges, 'dilate', round(thickness_pixel/2)); % make connections thicker
 BW_bridged = BW_thicken | BW_bridges;

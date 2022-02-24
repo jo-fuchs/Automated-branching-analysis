@@ -1,7 +1,5 @@
 function [Neurites, newSkel, axon, newEndPoints] = FindSomaNeurites(inputSkl, cBody, prevEndPoints, MIN_LEN)     %% ps = [endPoints; branchPoints]
-% FindSomaNeurites <finds all longest paths originating from soma and returns the longest as the axon
-% inputSkl = sklI;
-% prevEndPoints = allEndPoints;
+%FindSomaNeurites finds all longest paths originating from soma and returns the longest as the axon
 
 
 %% find starting points on Soma
@@ -11,16 +9,6 @@ noBody = inputSkl  & ~imerode(cBody,  strel('disk',1)); % imerode to make sure d
 % more stable via bodyBorderPoints, it adds more computation but fails less
 NeuriteStartPoints = find(bwmorph(cBody, 'endpoints'));
 
-% % find new endpoints (as the difference of current and previous endpoints)
-% MoreEndPoints=find(bwmorph(noBody,'endpoints'));
-% NeuriteStartPoints = setdiff(MoreEndPoints, prevEndPoints);
-% 
-% % account for disappearing branch points
-% prevBranchPoints = find(bwmorph(inputSkl,'branchpoints'));
-% lessBranchPoints = find(bwmorph(noBody,'branchpoints'));
-% lostBranchPoints = setdiff(prevBranchPoints, lessBranchPoints);
-% NeuriteStartPoints = [NeuriteStartPoints; lostBranchPoints];
-% 
 % remove start points outside the skeleton
 NeuriteStartPoints = intersect(NeuriteStartPoints, find(noBody));
 
@@ -47,15 +35,6 @@ disp('finding neurites');
         end
          
         
-        
-
-        
-        
-% this returns the full branch originating from a point        
-%         D2 = bwdistgeodesic(noBody, NeuriteStartPoints(k), 'quasi-euclidean');
-%         Neurites{k} = FindConnected(noBody, ps, D2); % why does it only return dends?
-%         display(k) % just a counter
-    
     
     end
     
@@ -85,7 +64,7 @@ disp('finding neurites');
     
     
     
-    % axon from Neurites{} and treat that as Dendrites
+    % remove axon from Neurites{} and treat rest as Dendrites
     Neurites{axonIndex} = [];
     Neurites = Neurites(~cellfun('isempty',Neurites));
     

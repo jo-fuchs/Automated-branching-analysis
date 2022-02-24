@@ -1,4 +1,4 @@
-function [per_neuron_results] = summarize_per_neuron(per_neuron_results, Classified_processes, pix_size, k, error_code)
+function [per_neuron_results] = summarizeResults(per_neuron_results, Classified_processes, pix_size, k, error_code)
 %Summarize_per_neuron summarizes relevant parameters for individual neurons
 %   Input: existing matrix of results, Classified processes, pixel size,
 %   iteration, error_code ('all fine', 'excluded', 'no soma', 'no neurites'
@@ -6,7 +6,7 @@ function [per_neuron_results] = summarize_per_neuron(per_neuron_results, Classif
     
     per_neuron_results(k,1) = {Classified_processes.Image_name}; 
 
-    % any problem?
+    % check if any known problem is detected
     switch error_code
         case 'all fine'
             per_neuron_results(k,2) = {Classified_processes.TimestampStart};

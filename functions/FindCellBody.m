@@ -1,8 +1,11 @@
 function [cBody, skel, center] = FindCellBody(I, tol, extentThr , s , S, thickness_pixel)
+%FindCellBody detects the cell body in a segmented image of a neuron based on morphological characteristics
 
-% sklI = bwmorph(I, 'skel', Inf);
+% skeletonize image
 skel = bwmorph(I,'thin',inf);
 
+
+% find centroid of soma
 while true
     B = imerode(I~=0, ones(s));
     B = bwareafilt(B,1);    % in case there are more than one Soma, just keep the largest one!
@@ -20,6 +23,8 @@ if~exist('extentThr', 'var')
     extentThr = -1;
 end
 
+
+% fill cell body by expanding until stopping conditions are met
 cBody = false(size(I));
 cBodyOld = cBody;
 cBody(x, y) = true;
@@ -38,18 +43,13 @@ while(sum(cBody(:)) ~= sum(cBodyOld(:)))
     end
 end
 
-cBody = imreconstruct(cBody,imerode(cBody, strel('disk', thickness_pixel, 0))); % erode by µm distance instead of pixel value (0.5µm)
-
+% erode soma for more robust detection of neurites in later stages
+cBody = imreconstruct(cBody,imerode(cBody, strel('disk', thickness_pixel, 0))); 
 I = cBody & skel;
-% figure; imshow(I);
-% figure; imshow(cBody);  title('Soma is found!'); pause(0.5);
+
 cBody = bwareafilt(cBody,1);    % Again, in case there are more than one Soma, just keep the largest one!
-% figure; imshow(cBody);
 rp = regionprops(cBody, 'Centroid');
 
-% rp.Centroid
 c = round(rp.Centroid);
 [~, ind] = bwdist(I);
-% [x, y] = ind2sub(size(I), ind(c(2), c(1)));
-% center = [x, y];
 center = double(ind(c(2), c(1)));
