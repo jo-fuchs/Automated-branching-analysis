@@ -33,12 +33,17 @@ newEndPoints = zeros(size(NewStartPoints));
 
 
 %% find longest paths from these points
-disp('...finding');
+disp('    ...finding');
   for k = flip(1:nnz(NewStartPoints)) % going backwards (in case one is removed)
         [Branches{k}, newEndPoints(k), newSkl] = findLongestConnected(NewStartPoints(k), newSkl);
         
-        len = nnz(Branches{k});
-        % if length of Neurites{k} < MIN_LEN) -> remove path (& start point)
+        if nnz(Branches{k}) == 0
+                len = 0;
+            else
+                len = regionprops(Branches{k},  'PerimeterOld').PerimeterOld/2;
+        end
+            
+        % if length of Branches{k} < MIN_LEN) -> remove path (& start point)
         if  len < MIN_LEN
             newSkl = newSkl & ~Branches{k};
             Branches{k} = [];
@@ -48,7 +53,7 @@ disp('...finding');
   end
   
 %% check for overlap
-disp('...refining');
+disp('    ...refining');
   [newSkl, Branches, newEndPoints ] = fixOverlap(newSkl, NewStartPoints, Branches, newEndPoints, MIN_LEN );
 
 

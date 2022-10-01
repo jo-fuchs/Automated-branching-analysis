@@ -84,8 +84,8 @@ BW_thicken = bwmorph(BW_thicken , 'bridge', round(thickness_pixel/2)); % 0.5 µm
 % If gap-briding is enabled
 if (gap_bridge_check)
     % Bridge by connecting endpoints
-    disp('briging gaps');
-    disp(gap_size_pixel);
+    disp('      Bridging gaps');
+    %disp(gap_size_pixel);
     BW_bridges = bridgeGaps(BW_thicken, gap_size_pixel);
 else
     BW_bridges = BW_thicken;    
@@ -149,7 +149,7 @@ Sorted_Sizes_afterFill = sortrows(Sizes); Sorted_Sizes_afterFill = table2array(S
 
 % If no Filling occured > resort to Thresholding
 if Sorted_Sizes_afterFill(end,:) < 1.001 * Sorted_Sizes_beforeFill(end,:) % if the size change was not noticable
-    disp('Image Filling not successful! Soma will be found by thresholding!');
+    disp('      Image Filling not successful! Soma will be found by thresholding!');
     
     % find brightest parts of image and remove thin extensions
     SomaInt = I > 0.3 * max(max(I));
@@ -169,7 +169,7 @@ if Sorted_Sizes_afterFill(end,:) < 1.001 * Sorted_Sizes_beforeFill(end,:) % if t
     Final_Seg = BW_RemovedSmallObjs | Soma;
 
 else
-    disp('Soma found by filling!');
+    disp('      Soma found by filling.');
 end
 
 

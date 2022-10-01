@@ -18,12 +18,19 @@ newEndPoints = zeros(size(NeuriteStartPoints));
 
 
 %% for each starting point find longest path in skeleton
-disp('finding neurites');
+disp('      finding neurites');
     for k = flip(1:nnz(NeuriteStartPoints)) % going backwards (in case one is removed)
 
         [Neurites{k}, newEndPoints(k), noBody] = findLongestConnected(NeuriteStartPoints(k), noBody);
-
-        len = nnz(Neurites{k});
+        
+        % new length measurement: 
+        % Perimeter of a line / 2 = length also for curved lines
+        % does not work for empty objects though -> test with nnz()
+        if nnz(Neurites{k}) == 0
+            len = 0;
+        else
+            len = regionprops(Neurites{k}, 'PerimeterOld').PerimeterOld/2;
+        end
         
         % if length of Neurites{k} < MIN_LEN) -> remove path (& endpoint)
         if  len < MIN_LEN
@@ -40,7 +47,7 @@ disp('finding neurites');
     
     %% Test for overlap and fix if there is
     newSkel = noBody;
-    disp('refining neurites');
+    disp('      refining neurites');
     [newSkel, Neurites, newEndPoints ] = fixOverlap(newSkel, NeuriteStartPoints, Neurites, newEndPoints, MIN_LEN );
     
         
@@ -50,7 +57,12 @@ disp('finding neurites');
     axon =  cell(1);
     
     for k = flip(1:size(Neurites)) % going backwards (in case one is removed)
-        len = nnz(Neurites{k});
+        if nnz(Neurites{k}) == 0
+            len = 0;
+        else
+            len = regionprops(Neurites{k}, 'PerimeterOld').PerimeterOld/2;
+        end
+        
         if len > axon_len    % find the longest one
           axon{1} = Neurites{k};
           axon_len = len;

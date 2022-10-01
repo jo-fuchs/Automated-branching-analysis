@@ -24,7 +24,15 @@ function [newSkel, Branches, endPoint ] = fixOverlap(newSkel, StartPoints, Branc
 
             [Branches{k}, endPoint(k), newSkel] = findLongestConnected(StartPoints(k), newSkel);
 
-            len = nnz(Branches{k});
+            % new length measurement: 
+            % Perimeter of a line / 2 = length also for curved lines
+            % does not work for empty objects though -> test with nnz()
+            if nnz(Branches{k}) == 0
+                len = 0;
+            else
+                len = regionprops(Branches{k},  'PerimeterOld').PerimeterOld/2;
+            end
+            
 
             % if length of Neurites{k} < MIN_LEN) -> remove path (& endpoint)
             if  len < MIN_LEN

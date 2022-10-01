@@ -11,53 +11,71 @@ function [per_neuron_results] = summarizeResults(per_neuron_results, Classified_
         case 'all fine'
             per_neuron_results(k,2) = {Classified_processes.TimestampStart};
             per_neuron_results(k,3) = {Classified_processes.TimestampEnd};
-    
-            % total_neurite_length
+   
+            % total_neurite_length (as measured from segmented skeleton!)
             sklI_noSoma = Classified_processes.Initial_skeleton .* (~ bwmorph(Classified_processes.cBody,'thin',1));
-            per_neuron_results(k,4) = {pix_size * nnz(sklI_noSoma)};
+            segmentedStruct = regionprops(bwlabel(sklI_noSoma), 'PerimeterOld');
+            per_neuron_results(k,4) = {pix_size * sum([segmentedStruct(:).PerimeterOld])/2};
+            
             % soma_size 
             per_neuron_results(k,5) = {pix_size * pix_size * nnz(Classified_processes.cBody)};
-             % axon_length 
-            per_neuron_results(k,6) = {pix_size * nnz(Classified_processes.Axon{1})};
+            
+            % axon_length 
+            per_neuron_results(k,6) = {pix_size * regionprops(Classified_processes.Axon{1},'PerimeterOld').PerimeterOld};
 
             % prim_branch_points
             prim_branch_points = size(Classified_processes.AxonBranches{2});
             per_neuron_results(k,7) = {prim_branch_points(1)};
+            
             % prim_branch_length
-            per_neuron_results(k,8) = {pix_size * nnz(cell2mat(Classified_processes.AxonBranches{2}))};
-
+            %per_neuron_results(k,8) = {pix_size * nnz(cell2mat(Classified_processes.AxonBranches{2}))};
+            
+            primaryStruct = regionprops(bwlabel(cell2mat(Classified_processes.AxonBranches{2})),'PerimeterOld');
+            per_neuron_results(k,8) = {pix_size * sum([primaryStruct(:).PerimeterOld])/2};
+            
             % sec_branch_points
             sec_branch_points = size(Classified_processes.AxonBranches{3});
             per_neuron_results(k,9) = {sec_branch_points(1)};    
             % sec_branch_length
-            per_neuron_results(k,10) = {pix_size * nnz(cell2mat(Classified_processes.AxonBranches{3}))};
+            %per_neuron_results(k,10) = {pix_size * nnz(cell2mat(Classified_processes.AxonBranches{3}))};
 
+            secStruct = regionprops(bwlabel(cell2mat(Classified_processes.AxonBranches{3})),'PerimeterOld');
+            per_neuron_results(k,10) = {pix_size * sum([secStruct(:).PerimeterOld])/2};
+            
             %tert_branch_points
             tert_branch_points = size(Classified_processes.AxonBranches{4});
             per_neuron_results(k,11) = {tert_branch_points(1)};
             %tert_branch_length
-            per_neuron_results(k,12) = {pix_size * nnz(cell2mat(Classified_processes.AxonBranches{4}))};
-
+            %per_neuron_results(k,12) = {pix_size * nnz(cell2mat(Classified_processes.AxonBranches{4}))};
+            
+            tertStruct = regionprops(bwlabel(cell2mat(Classified_processes.AxonBranches{4})),'PerimeterOld');
+            per_neuron_results(k,12) = {pix_size * sum([tertStruct(:).PerimeterOld])/2};
+            
             % Axon branches
             axon_branch_points = 0;
             axon_branch_length = 0;
             for l = 2:size(Classified_processes.AxonBranches)
                 num = size(Classified_processes.AxonBranches{l});
                 axon_branch_points = axon_branch_points + num(1);
-                len = nnz(cell2mat(Classified_processes.AxonBranches{l}));
+                %len = nnz(cell2mat(Classified_processes.AxonBranches{l}));
+                tempStruct = regionprops(bwlabel(cell2mat(Classified_processes.AxonBranches{l})),'PerimeterOld');
+                len = pix_size * sum([tempStruct(:).PerimeterOld])/2;
                 axon_branch_length = axon_branch_length + len;
             end
 
             per_neuron_results(k,13) = {axon_branch_points};
             % axon_branch_length
-            per_neuron_results(k,14) = {axon_branch_length * pix_size};
+            per_neuron_results(k,14) = {axon_branch_length};
 
 
             % dendrite_number
             dendrite_number = size(Classified_processes.Neurites);
             per_neuron_results(k,15) = {dendrite_number(1)};
+            
             % dendrite_length
-            per_neuron_results(k,16) = {pix_size * nnz(cell2mat(Classified_processes.Neurites))};
+            dendrStruct = regionprops(cell2mat(Classified_processes.Neurites),'PerimeterOld');
+            per_neuron_results(k,16) = {pix_size * sum([dendrStruct(:).PerimeterOld])/2};
+            % per_neuron_results(k,16) = {pix_size * nnz(cell2mat(Classified_processes.Neurites))};
 
             % Dendrite branches
             dendrite_branch_points = 0;
@@ -65,13 +83,15 @@ function [per_neuron_results] = summarizeResults(per_neuron_results, Classified_
             for l = 2:size(Classified_processes.NeuriteBranches)
                 num = size(Classified_processes.NeuriteBranches{l});
                 dendrite_branch_points = dendrite_branch_points + num(1);
-                len = nnz(cell2mat(Classified_processes.NeuriteBranches{l}));
+                %len = nnz(cell2mat(Classified_processes.NeuriteBranches{l}));
+                tempStruct2 = regionprops(bwlabel(cell2mat(Classified_processes.NeuriteBranches{l})),'PerimeterOld');
+                len = pix_size * sum([tempStruct2(:).PerimeterOld])/2;
                 dendrite_branch_length = dendrite_branch_length + len;
             end
 
             per_neuron_results(k,17) = {dendrite_branch_points};
             %dendrite_branch_length = 
-            per_neuron_results(k,18) = {dendrite_branch_length * pix_size};
+            per_neuron_results(k,18) = {dendrite_branch_length};
             
             % Total axon length
             per_neuron_results(k,19) = { per_neuron_results{k,6} +  per_neuron_results{k,14}};
@@ -129,7 +149,9 @@ function [per_neuron_results] = summarizeResults(per_neuron_results, Classified_
 
             % total_neurite_length (does not depend on classification)
             sklI_noSoma = Classified_processes.Initial_skeleton .* (~ bwmorph(Classified_processes.cBody,'thin',1));
-            per_neuron_results(k,4) = {pix_size * nnz(sklI_noSoma)};
+            segmentedStruct = regionprops(bwlabel(sklI_noSoma), 'PerimeterOld');
+            per_neuron_results(k,4) = {pix_size * sum([segmentedStruct(:).PerimeterOld])/2};
+            
             % soma_size 
             per_neuron_results(k,5) = {pix_size * pix_size * nnz(Classified_processes.cBody)};
             
@@ -152,7 +174,7 @@ function [per_neuron_results] = summarizeResults(per_neuron_results, Classified_
     end
         
     % Headers  
-    header = {'NeuronIndex', 'TimeStart', 'TimeEnd',  'TotalNeuriteLength', 'SomaSize' , 'PrimaryAxonLength', 'PrimBranchNum' , 'PrimBranchLength', 'SecBranchNum' , 'SecBranchLength', 'TertBranchNum' , 'TertBranchLength', 'AxonBranchPoints', 'AxonBranchLength', 'DendriteNum' , 'TotalDendriteLength', 'DendBranchNum' , 'DendBranchLen', 'TotalAxonLength','Comment'};
+    header = {'NeuronIndex', 'TimeStart', 'TimeEnd',  'TotalNeuriteLengthEstimate', 'SomaSize' , 'PrimaryAxonLength', 'PrimBranchNum' , 'PrimBranchLength', 'SecBranchNum' , 'SecBranchLength', 'TertBranchNum' , 'TertBranchLength', 'AxonBranchPoints', 'AxonBranchLength', 'DendriteNum' , 'TotalDendriteLength', 'DendBranchNum' , 'DendBranchLen', 'TotalAxonLength','Comment'};
     per_neuron_results.Properties.VariableNames = header;
 
 end

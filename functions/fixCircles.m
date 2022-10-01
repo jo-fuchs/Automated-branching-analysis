@@ -1,7 +1,7 @@
 function [inputSkl] = fixCircles(inputSkl, D2, max_val)
 %fixCircles removes circulararities induced by branch points
 %   searches for points where branches diverge and cut one of them
-    disp('....fixing circular structures in skeleton');
+    disp('    ....fixing circular structures in skeleton');
     
     numPaths = inf;
     count = 0;
