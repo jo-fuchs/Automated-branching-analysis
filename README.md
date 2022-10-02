@@ -9,8 +9,9 @@ This MATLAB-based tool was developed to analyze fluorescence micrographs of cult
 
 **Using the tool**
 
-To use the tool, open MATLAB (version 2019 or higher), set this folder as your working directory and start the tool by typing Neuron_Classifier_2() in the console. Continue by loading raw images (left side of the GUI, "Neuron Segmenter"), or by loading pre-segmented images as binary tif-files (right side of the GUI, "Neuron Classifier"). We encourage to optimize preprocessing and segmentation parameters on a subset of your dataset to maximize segmentation quality, before proceeding with the batch analysis of the full dataset. For Classification, specify a minimal length (in µm) that is considered a relevant protrusion. The software will save a binary segmented image in a 'Segmented' folder, an annotated image in 'Results/Figures' and a .csv file including summarized quantitative readouts per neuron.
+To use the tool with a full MATLAB installation (including Image Processing toolbox, Statistics and Machine Learning toolbox) open MATLAB (version 2019 or higher), set this folder as your working directory and start the tool by typing Neuron_Classifier_2() in the console. Continue by loading raw images (left side of the GUI, "Neuron Segmenter"), or by loading pre-segmented images as binary tif-files (right side of the GUI, "Neuron Classifier"). We encourage to optimize preprocessing and segmentation parameters on a subset of your dataset to maximize segmentation quality, before proceeding with the batch analysis of the full dataset. For Classification, specify a minimal length (in µm) that is considered a relevant protrusion. The software will save a binary segmented image in a 'Segmented' folder, an annotated image in 'Results/Figures' and a .csv file including summarized quantitative readouts per neuron.
 
+For users without a MATLAB license, we have added a compiled version (NeuronClassifier.exe) in the \bin folder. To use it, please install version R2022b (9.13) of MATLAB Runtime from [here](https://de.mathworks.com/products/compiler/matlab-runtime.html).
 
 **Suitable raw data**
 
@@ -33,4 +34,5 @@ Version 1.1:
   - "find longest path" to classify all paths
   - measure length not by number of pixels but by perimeter / 2 (by regionprops)
 - Improved GUI with log file
+- Standalone app
 
