@@ -21,7 +21,7 @@ function [per_neuron_results] = summarizeResults(per_neuron_results, Classified_
             per_neuron_results(k,5) = {pix_size * pix_size * nnz(Classified_processes.cBody)};
             
             % axon_length 
-            per_neuron_results(k,6) = {pix_size * regionprops(Classified_processes.Axon{1},'PerimeterOld').PerimeterOld};
+            per_neuron_results(k,6) = {pix_size * regionprops(Classified_processes.Axon{1},'PerimeterOld').PerimeterOld / 2};
 
             % prim_branch_points
             prim_branch_points = size(Classified_processes.AxonBranches{2});

@@ -44,7 +44,7 @@ while(sum(cBody(:)) ~= sum(cBodyOld(:)))
 end
 
 % erode soma for more robust detection of neurites in later stages
-cBody = imreconstruct(cBody,imerode(cBody, strel('disk', thickness_pixel, 0))); 
+%cBody = imreconstruct(cBody,imerode(cBody, strel('disk', thickness_pixel, 0))); 
 I = cBody & skel;
 
 cBody = bwareafilt(cBody,1);    % Again, in case there are more than one Soma, just keep the largest one!

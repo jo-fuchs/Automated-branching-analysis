@@ -4,13 +4,13 @@ function [Neurites, newSkel, axon, newEndPoints] = FindSomaNeurites(inputSkl, cB
 
 %% find starting points on Soma
 % remove cell body
-noBody = inputSkl  & ~imerode(cBody,  strel('disk',1)); % imerode to make sure dendrites get a start point
+noBody = inputSkl  & ~imerode(cBody, strel('disk',4)); % imerode to make sure start points are part of skeleton while neurites remain unconnected
 
-% more stable via bodyBorderPoints, it adds more computation but fails less
-NeuriteStartPoints = find(bwmorph(cBody, 'endpoints'));
+% find border of cell body and dilate it to robustly find intersections
+cBodyBorder = imdilate(bwmorph(cBody,'remove'), strel('disk',1));
 
-% remove start points outside the skeleton
-NeuriteStartPoints = intersect(NeuriteStartPoints, find(noBody));
+% find intersection of borders of cell body border with initial skeleton
+NeuriteStartPoints = intersect(find(cBodyBorder), find(inputSkl));
 
 
 Neurites = cell(size(NeuriteStartPoints));
