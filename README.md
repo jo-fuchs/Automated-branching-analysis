@@ -1,6 +1,6 @@
 # NeuronAnalysis
 
-## Batch analyzing the morphology of sparsely cultured primary neurons
+## Batch analyzing the morphology of sparsely labeled cultured primary neurons
 
 This MATLAB-based tool was developed to analyze fluorescence micrographs of cultured neurons for the automated quantitative analysis of axon length and branching. Files are automatically imported, and visual and numeric results are saved as standard file formats for further downstream processing and analysis.
 
@@ -11,7 +11,7 @@ This MATLAB-based tool was developed to analyze fluorescence micrographs of cult
 
 To use the tool with a full MATLAB installation (including Image Processing toolbox, Statistics and Machine Learning toolbox) open MATLAB (version 2019 or higher), set this folder as your working directory and start the tool by typing Neuron_Classifier_2() in the console. Continue by loading raw images (left side of the GUI, "Neuron Segmenter"), or by loading pre-segmented images as binary tif-files (right side of the GUI, "Neuron Classifier"). We encourage to optimize preprocessing and segmentation parameters on a subset of your dataset to maximize segmentation quality, before proceeding with the batch analysis of the full dataset. For Classification, specify a minimal length (in µm) that is considered a relevant protrusion. The software will save a binary segmented image in a 'Segmented' folder, an annotated image in 'Results/Figures' and a .csv file including summarized quantitative readouts per neuron.
 
-For users without a MATLAB license, we have added a compiled version (NeuronClassifier.exe) in the \bin folder. To use it, please install version R2022b (9.13) of MATLAB Runtime from [here](https://de.mathworks.com/products/compiler/matlab-runtime.html).
+For users without a MATLAB license, we have added a compiled version (NeuronClassifier_Installer.exe) in the \bin folder.
 
 **Suitable raw data**
 
@@ -23,16 +23,3 @@ When applying the tool to your own data, you have to preprocess the images to si
 All analysis codes can be reviewed in separate functions in the 'functions/' folder. The exact sequence of the algorithm and batch-processing can be reviewed by opening "Neuron_Classifier_2.mlapp" in MATLAB App Designer.
 
 Link to the preprint: [Automated Analysis of Neuronal Morphology through an Unsupervised Classification Model of Neurites](https://www.biorxiv.org/content/10.1101/2022.03.01.482454v1)
-
-
-Version 1.1:
-- Segmentation
-  - artifact removal
-  - soma reconstruction by filling
-  - briding gaps by joining endpoints
-- Classification
-  - "find longest path" to classify all paths
-  - measure length not by number of pixels but by perimeter / 2 (by regionprops)
-- Improved GUI with log file
-- Standalone app
-
