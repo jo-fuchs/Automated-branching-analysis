@@ -11,7 +11,7 @@ This MATLAB-based tool was developed to analyze fluorescence micrographs of cult
 
 To use the tool with a full MATLAB installation (including Image Processing toolbox, Statistics and Machine Learning toolbox) open MATLAB (version 2019 or higher), set this folder as your working directory and start the tool by typing Neuron_Classifier_2() in the console. Continue by loading raw images (left side of the GUI, "Neuron Segmenter"), or by loading pre-segmented images as binary tif-files (right side of the GUI, "Neuron Classifier"). We encourage to optimize preprocessing and segmentation parameters on a subset of your dataset to maximize segmentation quality, before proceeding with the batch analysis of the full dataset. For Classification, specify a minimal length (in µm) that is considered a relevant protrusion. The software will save a binary segmented image in a 'Segmented' folder, an annotated image in 'Results/Figures' and a .csv file including summarized quantitative readouts per neuron.
 
-For users without a MATLAB license, we have added a compiled version (NeuronClassifier_Installer.exe) in the \bin folder.
+For users without a MATLAB license, we have added a compiled version (NeuronClassifier_Installer.exe).
 
 **Suitable raw data**
 
