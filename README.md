@@ -23,3 +23,7 @@ When applying the tool to your own data, you have to preprocess the images to si
 All analysis codes can be reviewed in separate functions in the 'functions/' folder. The exact sequence of the algorithm and batch-processing can be reviewed by opening "Neuron_Classifier_2.mlapp" in MATLAB App Designer.
 
 Link to the preprint: [Automated Analysis of Neuronal Morphology through an Unsupervised Classification Model of Neurites](https://www.biorxiv.org/content/10.1101/2022.03.01.482454v1)
+
+Link to the published article: [Automated Analysis of Neuronal Morphology in 2D Fluorescence Micrographs through an Unsupervised Semantic Segmentation of Neurons, Neuroscience, 2024](10.1016/j.neuroscience.2024.05.024 )
+
+In case this repo will be updated for bugfixes or additional features, the stable release corresponding to the published article will be stored at AG-Ewers Github: [https://github.com/AG-Ewers/NeuronAnalysis2024](https://github.com/AG-Ewers/NeuronAnalysis2024)
